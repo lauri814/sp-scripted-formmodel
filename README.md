@@ -37,7 +37,8 @@ var formModel = new ScriptedFormBuilder()
 
 ![Jurassic Park visitor request](example.png)
 
-### Methods
+<details>
+<summary>Builder methods and options</summary>
 
 | Method | Minimum input and confirmed behavior |
 | --- | --- |
@@ -88,6 +89,8 @@ var formModel = new ScriptedFormBuilder()
 | `includeNone`, `noneLabel` | Select-box helpers only. `includeNone: true` adds an empty choice if absent; default label is `-- None --`. |
 | Reference and lookup qualifiers | Passed as metadata; neither helper queries lookup choices or evaluates qualifiers. |
 | Format validation | These Script Includes do not validate email, URL, IP-address, date, or duration formats. |
+
+</details>
 
 ## ScriptedFormDefinition
 
@@ -174,7 +177,8 @@ var formModel = new ScriptedFormDefinition().build({
 });
 ```
 
-### Schema
+<details>
+<summary>JSON definition schema</summary>
 
 | Location / property | Required / type | Confirmed constraints |
 | --- | --- | --- |
@@ -238,6 +242,8 @@ var formModel = new ScriptedFormDefinition().build({
 | `price`, `recurring_price`, `price_dc`, `rprice_dc` | Optional strings | Empty allowed; passed through without pricing or currency calculations. |
 | Other properties | Not accepted | Selection metadata is generated from the field's initial value. |
 
+</details>
+
 ## Usage
 
 Bind either API's output to the `form-model` attribute of the `sp-model` directive:
@@ -252,4 +258,5 @@ Bind either API's output to the `form-model` attribute of the `sp-model` directi
 npm ci
 npm run build
 npm run deploy
+# To explicitly include the demo: npm run deploy -- --demoData
 ```
