@@ -7,7 +7,6 @@
       <sp-widget widget="c.data.preview"></sp-widget>
     </div>
     <hr>
-    <h3 class="h4">${One form, two APIs}</h3>
     <div class="btn-group m-b-lg" role="group" aria-label="${Form model API}">
       <button type="button" class="btn btn-default"
               ng-disabled="c.applying || !c.previewReady"
@@ -20,33 +19,17 @@
               ng-attr-aria-pressed="{{c.activeApi === 'definition'}}"
               ng-click="c.selectApi('definition')">ScriptedFormDefinition</button>
     </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="ff-builder-{{$id}}">ScriptedFormBuilder</label>
-          <form-foundry-code-editor class="ff-editor" language="javascript"
-                    input-id="ff-builder-{{$id}}" label="${ScriptedFormBuilder example source}" ng-model="c.builderSource"
-                    read-only="true"></form-foundry-code-editor>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="ff-definition-{{$id}}">ScriptedFormDefinition</label>
-          <form-foundry-code-editor class="ff-editor" language="json"
-                    input-id="ff-definition-{{$id}}" label="${ScriptedFormDefinition example source}" ng-model="c.definitionText"
-                    disabled="c.applying"></form-foundry-code-editor>
-          <p class="help-block" ng-if="c.definitionText !== c.appliedDefinition">${Unapplied changes.}</p>
-        </div>
-      </div>
+    <div class="form-group" ng-if="c.activeApi === 'builder'">
+      <form-foundry-code-editor class="ff-editor" language="javascript"
+                input-id="ff-builder-{{$id}}" label="${ScriptedFormBuilder example source}" ng-model="c.builderSource"
+                read-only="true"></form-foundry-code-editor>
+    </div>
+    <div class="form-group" ng-if="c.activeApi === 'definition'">
+      <form-foundry-code-editor class="ff-editor" language="json"
+                input-id="ff-definition-{{$id}}" label="${ScriptedFormDefinition example source}"
+                ng-model="c.definitionText"></form-foundry-code-editor>
     </div>
     <div class="alert alert-danger" role="alert" ng-if="c.error">{{c.error}}</div>
-    <div class="m-b-sm">
-      <button type="button" class="btn btn-primary" ng-disabled="c.applying || !c.previewReady" ng-click="c.applyPreview()">${Apply preview}</button>
-      <button type="button" class="btn btn-default" ng-disabled="c.applying || (c.previewVisible && !c.previewReady)" ng-click="c.resetSample()">${Reset sample}</button>
-    </div>
-    <p class="help-block" role="status" aria-live="polite">
-      <span ng-if="c.applying">${Updating preview…}</span>
-      <span ng-if="!c.applying">{{c.status}}</span>
-    </p>
+    <p class="help-block" role="status" aria-live="polite" ng-if="c.applying">${Updating preview…}</p>
   </div>
 </div>
