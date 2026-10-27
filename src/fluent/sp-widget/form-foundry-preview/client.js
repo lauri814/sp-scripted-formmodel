@@ -6,6 +6,10 @@ api.controller = function ($scope) {
 
     $scope.$on('spModel.gForm.env.created', function (event, form) {
         if (forms.indexOf(form) === -1) forms.push(form);
+        // Transient fields already use their variable names. Catalog alias dispatch
+        // would report the same change twice when name and variable_name match.
+        if (c.formModel.is_transient && form.$private && typeof form.$private.options === 'function')
+            form.$private.options({ getMappedFieldName: null });
     });
     $scope.$on('spModel.gForm.initialized', function () {
         if (ready) return;
