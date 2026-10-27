@@ -1,0 +1,11 @@
+{
+    "scope": "x_934661_foundry",
+    "scopeId": "939267d2e23349cfa92d9a6a4c376824",
+    "name": "Form Foundry",
+    "serverModulesExcludePatterns": [
+        "**/*.test.ts",
+        "**/*.test.js",
+        "**/*.d.ts",
+        "**/script-includes/**"
+    ]
+}

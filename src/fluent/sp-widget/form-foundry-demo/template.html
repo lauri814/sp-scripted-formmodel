@@ -1,0 +1,43 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">${Plan a team offsite}</h2>
+  </div>
+  <div class="panel-body">
+    <p class="text-muted">${Bring your people together. Start with the details; dream a little about the rest.}</p>
+    <div ng-if="c.formModel">
+      <sp-model form-model="c.formModel" mandatory="c.mandatory"></sp-model>
+    </div>
+    <p class="help-block">${Interactive demo only. Answers are not submitted or saved.}</p>
+    <hr>
+    <h3 class="h4">${One form, two APIs}</h3>
+    <p class="text-muted">${Switch the live form between the builder and JSON definition APIs. Each preview keeps its own answers.}</p>
+    <div class="btn-group m-b-lg" role="group" aria-label="${Form model API}">
+      <button type="button" class="btn btn-default"
+              ng-class="{'active': c.activeApi === 'builder'}"
+              ng-attr-aria-pressed="{{c.activeApi === 'builder'}}"
+              ng-click="c.selectApi('builder')">ScriptedFormBuilder</button>
+      <button type="button" class="btn btn-default"
+              ng-class="{'active': c.activeApi === 'definition'}"
+              ng-attr-aria-pressed="{{c.activeApi === 'definition'}}"
+              ng-click="c.selectApi('definition')">ScriptedFormDefinition</button>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="ff-builder-{{$id}}">ScriptedFormBuilder</label>
+          <textarea id="ff-builder-{{$id}}" class="form-control ff-code" rows="22"
+                    ng-model="c.data.examples.builder" readonly spellcheck="false"
+                    wrap="off" aria-label="${ScriptedFormBuilder example source}"></textarea>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="ff-definition-{{$id}}">ScriptedFormDefinition</label>
+          <textarea id="ff-definition-{{$id}}" class="form-control ff-code" rows="22"
+                    ng-model="c.data.examples.definition" readonly spellcheck="false"
+                    wrap="off" aria-label="${ScriptedFormDefinition example source}"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

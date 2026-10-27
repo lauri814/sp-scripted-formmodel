@@ -1,0 +1,16 @@
+.DS_Store
+.now/
+dist/
+node_modules
+target/
+*.tsbuildinfo
+.jest_cache
+tests/
+test/
+**/__tests__/
+**/*.test.*
+**/*.spec.*
+*.md
+!/README.md
+.env
+.env.*
