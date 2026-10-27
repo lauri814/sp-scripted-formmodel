@@ -2,8 +2,6 @@
 
 Form Foundry builds transient Service Portal form models from JavaScript or JSON definitions. It uses the OOB `spModel` directive without creating catalog questions or persisting answers.
 
-![Jurassic Park visitor request](example.png)
-
 ## ScriptedFormBuilder
 
 ```javascript
@@ -37,7 +35,9 @@ var formModel = new ScriptedFormBuilder()
     .build();
 ```
 
-### wip — methods
+![Jurassic Park visitor request](example.png)
+
+### Methods
 
 | Method | Minimum input and confirmed behavior |
 | --- | --- |
@@ -174,7 +174,7 @@ var formModel = new ScriptedFormDefinition().build({
 });
 ```
 
-### wip — schema
+### Schema
 
 | Location / property | Required / type | Confirmed constraints |
 | --- | --- | --- |
