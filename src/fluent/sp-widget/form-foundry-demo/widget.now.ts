@@ -11,7 +11,9 @@ export const formFoundryDemoWidget = SPWidget({
     controllerAs: 'c',
     public: false,
     htmlTemplate: Now.include('./template.html'),
-    serverScript: Now.include('./server.js'),
+    serverScript: `var formFoundryDefaultDefinition = ${Now.include('./offsite-definition.json')};
+${Now.include('./builder-example.js')}
+${Now.include('./server.js')}`,
     clientScript: Now.include('./client.js'),
     customCss: Now.include('./styles.scss'),
 })

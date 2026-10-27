@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h2 class="panel-title">${Plan a team offsite}</h2>
+    <h2 class="panel-title">{{c.data.title}}</h2>
   </div>
   <div class="panel-body">
     <p class="text-muted">${Bring your people together. Start with the details; dream a little about the rest.}</p>
@@ -10,7 +10,7 @@
     <p class="help-block">${Interactive demo only. Answers are not submitted or saved.}</p>
     <hr>
     <h3 class="h4">${One form, two APIs}</h3>
-    <p class="text-muted">${Switch the live form between the builder and JSON definition APIs. Each preview keeps its own answers.}</p>
+    <p class="text-muted">${Edit the JSON definition and apply it to update both previews and the matching builder example. Switching APIs keeps each preview's answers; applying changes resets them.}</p>
     <div class="btn-group m-b-lg" role="group" aria-label="${Form model API}">
       <button type="button" class="btn btn-default"
               ng-class="{'active': c.activeApi === 'builder'}"
@@ -25,19 +25,31 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label for="ff-builder-{{$id}}">ScriptedFormBuilder</label>
+          <p class="help-block">${Generated JavaScript for the last applied definition. Ready to copy and use.}</p>
           <textarea id="ff-builder-{{$id}}" class="form-control ff-code" rows="22"
-                    ng-model="c.data.examples.builder" readonly spellcheck="false"
+                    ng-model="c.builderSource" readonly spellcheck="false"
                     wrap="off" aria-label="${ScriptedFormBuilder example source}"></textarea>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
           <label for="ff-definition-{{$id}}">ScriptedFormDefinition</label>
+          <p class="help-block">${Editable JSON passed to new ScriptedFormDefinition().build(definition).}</p>
           <textarea id="ff-definition-{{$id}}" class="form-control ff-code" rows="22"
-                    ng-model="c.data.examples.definition" readonly spellcheck="false"
+                    ng-model="c.definitionText" ng-disabled="c.applying" spellcheck="false"
                     wrap="off" aria-label="${ScriptedFormDefinition example source}"></textarea>
+          <p class="help-block" ng-if="c.definitionText !== c.appliedDefinition">${Unapplied changes. Apply preview to render this definition.}</p>
         </div>
       </div>
     </div>
+    <div class="alert alert-danger" role="alert" ng-if="c.error">{{c.error}}</div>
+    <div class="m-b-sm">
+      <button type="button" class="btn btn-primary" ng-disabled="c.applying" ng-click="c.applyPreview()">${Apply preview}</button>
+      <button type="button" class="btn btn-default" ng-disabled="c.applying" ng-click="c.resetSample()">${Reset sample}</button>
+    </div>
+    <p class="help-block" role="status" aria-live="polite">
+      <span ng-if="c.applying">${Updating preview…}</span>
+      <span ng-if="!c.applying">{{c.status}}</span>
+    </p>
   </div>
 </div>

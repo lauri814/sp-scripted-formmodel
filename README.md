@@ -61,17 +61,33 @@ Set a widget server property such as `data.formModel` to either API's result, th
 
 Initialize `c.mandatory = []` in the widget controller. Both Script Includes are scoped to the application. Answer storage, submission, catalog transactions, and business validation belong to the consuming application.
 
-The included team-offsite demo compares equivalent models from both APIs, displays their source, and switches the live preview between them. The demo page, widget, and layout records use `$meta: { installMethod: 'demo' }`. After installation, open `/esc?id=x_934661_foundry_demo` or `/sp?id=x_934661_foundry_demo`.
+The team-offsite demo has an editable JSON definition and a matching, read-only JavaScript builder example. Select **Apply preview** to validate the JSON, rebuild both models, and regenerate the builder code. Invalid input leaves the last working preview available; **Reset sample** restores the default definition. Switching APIs preserves each preview's answers, while applying a definition resets them. Changing the full name displays a greeting using `g_form.addInfoMessage()`.
 
-## Build and install
+The default definition is stored in `src/fluent/sp-widget/form-foundry-demo/offsite-definition.json` and included in the widget at build time. The builder example serializes the same method calls used to render its model; it does not depend on runtime function-source inspection or evaluate edited JavaScript on the server.
 
-Requires Node.js 20.18 or later. The project uses ServiceNow SDK 4.14.0.
+The demo page, widget, and layout records use `$meta: { installMethod: 'demo' }`. After installation, open `/esc?id=x_934661_foundry_demo` or `/sp?id=x_934661_foundry_demo`.
+
+## Installation
+
+Requires Node.js 20.18 or later and a ServiceNow development instance configured for SDK OAuth authentication.
+
+Clone the repository and run the following commands from its root, where `now.config.json` and `package.json` live. This is an existing Fluent project, so **do not run `init`**.
 
 ```bash
+git clone https://github.com/lauri814/sp-scripted-formmodel.git
+cd sp-scripted-formmodel
+
+# Install the project's pinned dependencies, including the local SDK.
 npm ci
+
+# Authenticate once; replace the example URL with your instance URL.
+npx --no-install @servicenow/sdk auth --add https://your-instance.service-now.com --type oauth --alias dev
+
+# Compile the Fluent source into application records.
 npm run build
-# With SDK authentication configured:
-npx --no-install @servicenow/sdk install --demoData
+
+# Deploy the built application, including its demo records.
+npm run deploy -- --auth dev --demoData
 ```
 
-`now.config.json` and `package.json` live at the repository root. The application remains **Form Foundry**, version **0.0.1**, scope `x_934661_foundry`; generated record identities are retained in `src/fluent/generated/keys.ts`.
+No global SDK installation is required. `npm run build` and `npm run deploy` use the local SDK installed by `npm ci`. The `deploy` script runs `now-sdk install`; here, **install means deploying to the instance**, not installing an npm dependency. For subsequent changes, repeat build and deploy.
