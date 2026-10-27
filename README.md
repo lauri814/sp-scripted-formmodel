@@ -1,20 +1,37 @@
-# sp-scripted-formmodel
+# Form Foundry
 
-Form Foundry builds transient Service Portal form models from JavaScript or JSON definitions. It uses the native `sp-model` renderer without creating catalog questions or persisting answers.
+Form Foundry builds transient Service Portal form models from JavaScript or JSON definitions. It uses the OOB `spModel` directive without creating catalog questions or persisting answers.
 
 ## ScriptedFormBuilder
 
 ```javascript
 var formModel = new ScriptedFormBuilder()
-    .singleLineText('summary', 'Summary', { mandatory: true })
-    .email('email', 'Email')
-    .selectBox('priority', 'Priority', {
+    .containerStart('visit_details', 'Jurassic Park visitor request', { displayTitle: true })
+    .singleLineText('visitor_name', 'Visitor name', { mandatory: true })
+    .email('email', 'Email', { mandatory: true })
+    .date('visit_date', 'Visit date', { mandatory: true })
+    .containerSplit()
+    .selectBox('enclosure', 'Enclosure', {
         choices: [
-            { label: 'Normal', value: 'normal' },
-            { label: 'Urgent', value: 'urgent' }
+            { label: 'Brachiosaurus meadow', value: 'brachiosaurus' },
+            { label: 'Triceratops paddock', value: 'triceratops' },
+            { label: 'Velociraptor enclosure', value: 'raptors' }
         ],
-        value: 'normal'
+        value: 'brachiosaurus',
+        mandatory: true
     })
+    .numericScale('party_size', 'Party size', { min: 1, max: 6, value: '2' })
+    .multiLineText('special_requirements', 'Special requirements', {
+        placeholder: 'Accessibility, dietary needs, or a very good escape plan'
+    })
+    .containerEnd()
+    .clientScript('onChange', 'Raptor enclosure advisory',
+        'function onChange(control, oldValue, newValue, isLoading) {' +
+        'if (isLoading || newValue !== "raptors") return;' +
+        'g_form.addInfoMessage("Please keep your hands inside the vehicle.");' +
+        '}',
+        { fieldName: 'enclosure' }
+    )
     .build();
 ```
 
@@ -75,14 +92,82 @@ var formModel = new ScriptedFormBuilder()
 ```javascript
 var formModel = new ScriptedFormDefinition().build({
     schemaVersion: 1,
-    id: 'request',
+    id: 'jurassic_park_visit',
     elements: [{
-        id: 'summary-field',
-        kind: 'field',
-        name: 'summary',
-        label: 'Summary',
-        fieldType: 'singleLineText',
-        options: { mandatory: true }
+        id: 'visit_details_container',
+        kind: 'container',
+        name: 'visit_details',
+        label: 'Jurassic Park visitor request',
+        options: { displayTitle: true },
+        columns: [{
+            id: 'visitor_column',
+            elements: [{
+                id: 'visitor_name_field',
+                kind: 'field',
+                name: 'visitor_name',
+                label: 'Visitor name',
+                fieldType: 'singleLineText',
+                options: { mandatory: true }
+            }, {
+                id: 'email_field',
+                kind: 'field',
+                name: 'email',
+                label: 'Email',
+                fieldType: 'email',
+                options: { mandatory: true }
+            }, {
+                id: 'visit_date_field',
+                kind: 'field',
+                name: 'visit_date',
+                label: 'Visit date',
+                fieldType: 'date',
+                options: { mandatory: true }
+            }]
+        }, {
+            id: 'tour_column',
+            elements: [{
+                id: 'enclosure_field',
+                kind: 'field',
+                name: 'enclosure',
+                label: 'Enclosure',
+                fieldType: 'selectBox',
+                options: {
+                    choices: [
+                        { label: 'Brachiosaurus meadow', value: 'brachiosaurus' },
+                        { label: 'Triceratops paddock', value: 'triceratops' },
+                        { label: 'Velociraptor enclosure', value: 'raptors' }
+                    ],
+                    value: 'brachiosaurus',
+                    mandatory: true
+                }
+            }, {
+                id: 'party_size_field',
+                kind: 'field',
+                name: 'party_size',
+                label: 'Party size',
+                fieldType: 'numericScale',
+                options: { min: 1, max: 6, value: '2' }
+            }, {
+                id: 'special_requirements_field',
+                kind: 'field',
+                name: 'special_requirements',
+                label: 'Special requirements',
+                fieldType: 'multiLineText',
+                options: {
+                    placeholder: 'Accessibility, dietary needs, or a very good escape plan'
+                }
+            }]
+        }]
+    }],
+    scripts: [{
+        id: 'raptor_advisory_script',
+        type: 'onChange',
+        name: 'Raptor enclosure advisory',
+        fieldName: 'enclosure',
+        source: 'function onChange(control, oldValue, newValue, isLoading) {' +
+            'if (isLoading || newValue !== "raptors") return;' +
+            'g_form.addInfoMessage("Please keep your hands inside the vehicle.");' +
+            '}'
     }]
 });
 ```
