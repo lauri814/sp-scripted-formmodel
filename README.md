@@ -51,43 +51,18 @@ Definitions require `schemaVersion: 1`, a nonempty `id`, and an `elements` array
 
 The adapter copies its input, validates the complete definition, and then calls the builder. IDs must be unique across the definition, elements, columns, and scripts. Runtime names must also be unique, including generated checkbox groups. Invalid types, unknown properties, and unsupported nesting throw errors with the failing path or element context.
 
-## Rendering and demo
+## Usage
 
-Set a widget server property such as `data.formModel` to either API's result, then bind it in the template:
+Bind either API's output to the `form-model` attribute of the `sp-model` directive:
 
 ```html
-<sp-model form-model="c.data.formModel" mandatory="c.mandatory"></sp-model>
+<sp-model form-model="c.data.formModel" mandatory="[]"></sp-model>
 ```
-
-Initialize `c.mandatory = []` in the widget controller. Both Script Includes are scoped to the application. Answer storage, submission, catalog transactions, and business validation belong to the consuming application.
-
-The team-offsite demo has an editable JSON definition and a matching, read-only JavaScript builder example. Select **Apply preview** to validate the JSON, rebuild both models, and regenerate the builder code. Invalid input leaves the last working preview available; **Reset sample** restores the default definition. Switching APIs preserves each preview's answers, while applying a definition resets them. Changing the full name displays a greeting using `g_form.addInfoMessage()`.
-
-The default definition is stored in `src/fluent/sp-widget/form-foundry-demo/offsite-definition.json` and included in the widget at build time. The builder example serializes the same method calls used to render its model; it does not depend on runtime function-source inspection or evaluate edited JavaScript on the server.
-
-The demo page, widget, and layout records use `$meta: { installMethod: 'demo' }`. After installation, open `/esc?id=x_934661_foundry_demo` or `/sp?id=x_934661_foundry_demo`.
 
 ## Installation
 
-Requires Node.js 20.18 or later and a ServiceNow development instance configured for SDK OAuth authentication.
-
-Clone the repository and run the following commands from its root, where `now.config.json` and `package.json` live. This is an existing Fluent project, so **do not run `init`**.
-
 ```bash
-git clone https://github.com/lauri814/sp-scripted-formmodel.git
-cd sp-scripted-formmodel
-
-# Install the project's pinned dependencies, including the local SDK.
 npm ci
-
-# Authenticate once; replace the example URL with your instance URL.
-npx --no-install @servicenow/sdk auth --add https://your-instance.service-now.com --type oauth --alias dev
-
-# Compile the Fluent source into application records.
 npm run build
-
-# Deploy the built application, including its demo records.
-npm run deploy -- --auth dev --demoData
+npm run deploy
 ```
-
-No global SDK installation is required. `npm run build` and `npm run deploy` use the local SDK installed by `npm ci`. The `deploy` script runs `now-sdk install`; here, **install means deploying to the instance**, not installing an npm dependency. For subsequent changes, repeat build and deploy.
