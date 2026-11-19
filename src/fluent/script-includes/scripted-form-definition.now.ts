@@ -7,7 +7,7 @@ export const ScriptedFormDefinition = ScriptInclude({
     description: 'Validates versioned JSON form definitions and builds Service Portal form models through ScriptedFormBuilder.',
     active: true,
     accessibleFrom: 'public',
-    callerAccess: 'restriction',
+    callerAccess: 'tracking',
     clientCallable: false,
     script: Now.include('../../server/script-includes/ScriptedFormDefinition.js'),
 })
