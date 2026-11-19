@@ -6,7 +6,8 @@ export const ScriptedFormBuilder = ScriptInclude({
     name: 'ScriptedFormBuilder',
     description: 'Builds transient Service Portal form models with chainable field and layout methods.',
     active: true,
-    accessibleFrom: 'package_private',
+    accessibleFrom: 'public',
+    callerAccess: 'restriction',
     clientCallable: false,
     script: Now.include('../../server/script-includes/ScriptedFormBuilder.js'),
 })
